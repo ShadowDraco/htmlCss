@@ -1,0 +1,2451 @@
+
+package com.MVFMain;
+
+import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.util.Random;
+import java.util.Scanner;
+
+public class MVFMain{
+
+	public static void main(String[] args) {
+
+		// System Objects
+		Scanner in = new Scanner(System.in);
+		Random rand = new Random();
+
+		boolean running = true;
+
+		/**
+		 * 
+		 * Class Variables
+		 * 
+		 */
+		boolean fightAries = false;
+		boolean ariesBlessing = false;
+		boolean isArcher = false;
+		boolean isWarrior = false;
+		boolean isMage = false;
+
+		/**
+		 * 
+		 * Inventory Variables
+		 * 
+		 */
+
+		int playerInventorySpace = 0;
+		int playerPotionSpace = 0;
+
+		int metalScraps = 0;
+		int leatherScraps = 0;
+		int leatherStrips = 0;
+		int petScrolls = 0;
+		int woodBat = 0;
+		int metalBat = 0;
+		int walkingStick = 0;
+		int stoneSword = 0;
+		int metalSword = 0;
+		int woodenield = 0;
+		int metalShield = 0;
+		int katana = 0;
+
+		/**
+		 * 
+		 * Location Variables
+		 * 
+		 */
+
+		boolean isFromGonroar = false;
+		boolean isFromWinleaf = false;
+		boolean isFromIDK = false;
+		boolean isFromInwen = false;
+
+		boolean home = false;
+		boolean town = false;
+		boolean shop = false;
+		boolean brewery = false;
+		boolean blacksmith = false;
+		boolean world = false;
+		boolean dungeon = false;
+		boolean inventory = false;
+		boolean potionBag = false;
+		boolean fighting = false;
+		boolean ran = false;
+
+		// Encounter Legendary Creatures
+		String[] dungeonType = { "Unicorn", "Dragon", "Cyclops", "Golem", "Griffon", "Drake", "Pegasus", "Minotaur" };
+
+		int distanceFromHome = 0;
+
+		int grasslandsBoundary = 2;
+		int dessertBoundary = 4;
+		int mountainBoundary = 6;
+		int godBoundary = 20;
+		int walkingSpeed = 500;
+
+		boolean isInGrasslands = false;
+		boolean isInDessert = false;
+		boolean isInMountain = false;
+		boolean isInLegendary = false;
+		boolean isInGodLands = false;
+
+		String currentBiome = "";
+
+		/**
+		 * 
+		 * Player Variables
+		 * 
+		 */
+
+		boolean firstQuestComplete = true;
+
+		boolean playerLost = false;
+		boolean playerVictory = false;
+
+		int playerScore = 0;
+		int playerLevel = 1;
+
+		int playerHealth = 0;
+		int playerMaxHealth = 0;
+		int playerMana = 0;
+
+		int playerAttackDamage = 0;
+		int playerMinAttackDamage = 10 + playerLevel * 2;
+		int playerAttackStrength = 0;
+
+		int playerArmorValue = 0;
+
+		int playerPoisonTimer = 0;
+		boolean playerIsPoisoned = false;
+
+		int playerGold = 0;
+
+		int playerAgility = 0;
+		int playerAccuracy = 0;
+		int playerIntellect = 0;
+		int playerLuck = 0;
+		int playerCritChance = 0;
+		int playerCritDamage = 0;
+		/*
+		 * if (levelUp) { pick a random stat to add 2 to give two stat points,
+		 * to level up any desired stat }
+		 * 
+		 */
+		int playerStatPoints = 0;
+		int playerExp = 100;
+		int playerExpCap = 5;
+		int playerExpLeft = 0;
+		int playerExpMultiplier = 1;
+		int expEarned = 0;
+
+		int baseMana = 30;
+		int baseHealth = 200;
+		int baseAgility = 10;
+		int baseAccuracy = 80;
+		int baseIntellect = 2;
+		int baseGold = 25;
+		int baseArmorValue = 3;
+		int baseStrength = 5;
+		int basePotionCount = 2;
+
+		int playerHealthPotCount = 2;
+		int playerManaPotCount = 0;
+		int playerStrengthPotCount = 0;
+		int playerAttackPotCount = 0;
+
+		int baseLuck = 2;
+		int baseAttackDamage = 10;
+		int baseCritDamage = 5;
+		int baseCritChance = 10;
+		int baseInventorySpace = 10;
+		int basePotionSpace = 6;
+		int baseRunChance = 50;
+
+		boolean playerOwnsPotion = true;
+
+		boolean playerOwnsHelmet = false;
+		boolean playerHelmetEquipped = false;
+		boolean playerOwnsChestpiece = false;
+		boolean playerChestpieceEquipped = false;
+		boolean playerOwnsLegs = false;
+		boolean playerLegsEquipped = false;
+		boolean playerOwnsBoots = false;
+		boolean playerBootsEquipped = false;
+
+		int playerHelmetBaseDurability = 25;
+		int playerChestpieceBaseDurability = 70;
+		int playerLegsBaseDurability = 50;
+		int playerBootsBaseDurability = 30;
+
+		int playerRunChance = 40 + playerLuck + playerIntellect;
+
+		int playerPetLevel = 0;
+		int playerPetExp = 0;
+		int playerPetExpLeft = 5;
+		int playerPetExpCap = 5;
+		int playerPetMaxHealth = playerMaxHealth / 2;
+		int playerPetHealth = 0;
+		int playerPetAttackDamage = playerAttackDamage / 2 + playerCritDamage + playerAttackStrength / 2;
+		int playerSmallCreatureTameChance = 15;
+		int playerLargeCreatureTameChane = 7;
+		int playerLegendaryCreatureTameChance = 1;
+		int playerPetManaHealAmount = 5 + playerPetLevel;
+		int playerPetHealthHealAmount = 10 + playerPetLevel + playerLuck;
+
+		boolean playerOwnsPet = false;
+		boolean hasLeviathanTooth = false;
+
+		String playerPetName = "";
+		String petRarity = "";
+
+		/**
+		 * 
+		 * Creature Variables
+		 * 
+		 */
+		boolean foundSmallCreature = false;
+		boolean foundLargeCreature = false;
+		boolean foundLegendCreature = false;
+
+		int smallCreatureMaxHealth = 55;
+		int largeCreatureMaxHealth = 130;
+		int legendCreatureMaxHealth = 300;
+
+		int smallCreatureMaxAttack = 15;
+		int largeCreatureMaxAttack = 35;
+		int legendCreatureMaxAttack = 60;
+
+		int smallCreatureMinHealth = 20;
+		int largeCreatureMinHealth = 70;
+		int legendCreatureMinHealth = 150;
+
+		int smallCreatureMinAttack = 3;
+		int largeCreatureMinAttack = 15;
+		int legendCreatureMinAttack = 30;
+
+		int smallCreatureMaxAgility = 30;
+		int largeCreatureMaxAgility = 20;
+
+		int smallCreatureMinAgility = 5;
+		int largeCreatureMinAgility = 5;
+
+		int smallCreatureMaxAccuracy = 90;
+		int largeCreatureMaxAccuracy = 80;
+
+		int smallCreatureMinAccuracy = 60;
+		int largeCreatureMinAccuracy = 50;
+
+		int enemyCritDamage = 5;
+
+		int enemyAgility = 0;
+
+		int smallCreatureTameChance = 30 + playerLuck / 2 - playerIntellect / 2;
+		int largeCreatureTameChance = 15 + playerLuck / 2 - playerIntellect / 2;
+		int legendCreatureTameChance = 4;
+
+		/*
+		 * Grasslands creatures
+		 */
+		String[] grasslandSmallCreatures = { "Meercat", "Sparrow", "Goat", "Pig", "Chicken" };
+		String[] dessertSmallCreatures = { "Armadillo", "Coyote" };
+		String[] mountainSmallCreatures = { "Goat", "Coyote", "Skunk" };
+		String[] LegendarySmallCreatures = { "Meercat", "Sparrow", "Goat", "Pig", "Chicken", "Goat", "Coyote", "Skunk",
+				"Armadillo", "Goat", "Coyote", "Skunk" };
+
+		String[] grasslandLargeCreatures = { "Bull", "Horse", "Rhino" };
+		String[] dessertLargeCreatures = { "Camel", "Buck", "Elk", "Cougar" };
+		String[] mountainLargeCreatures = { "Brown Bear", "BobCat", "Bison", "Buffalo", "Moose" };
+
+		String[] grasslandLegendCreatures = { "Griffon", "Minotaur" };
+		String[] dessertLegendCreatures = { "Chimera" };
+		String[] mountainLegendCreatures = { "Centaur", "Saytr" };
+		String[] LegendaryLegendCreatures = { "Pegasus", "Giant", "Mermaid", "Siren" };
+
+		String currentEnemyRarity = "";
+		String currentEnemy = "";
+		int enemyHealth = 0;
+		boolean enemyPoisioned = false;
+		int enemyPosionTimer = 0;
+		int damageDone = 0;
+		boolean isCritHit = false;
+		boolean enemyIsCritHit = false;
+		int enemyCritChance = 0;
+		int damageTaken = 0;
+		int enemyAccuracy = 0;
+		int enemyAttack = 0;
+		boolean justStarted = true;
+
+		/**
+		 * 
+		 * Loot Variables
+		 * 
+		 */
+		int chestFindChance = 30;
+		int luckyChestFindChance = 10;
+
+		// any loot that is not inside of a chest
+		/*
+		 * if (foundLoot >= lootChance) { scrapMetalChance =
+		 * 50+playerIntellect+playerLuck+playerLevel; petScrollChance =
+		 * 20+playerIntellect+playerLuck+playerLevel }
+		 *
+		 */
+		int scrapMetalChance = 10 + playerLuck;
+		int petScrollChance = 1 + playerLuck;
+		int leatherScrapChance = 10 + playerLuck;
+		int leatherStripChance = 5 + playerLuck;
+		int goldChance = 5 + playerLuck;
+		int potionChance = 5 + playerLuck;
+
+		int scrapMetalFindCount = 0;
+		int leatherScrapFindCount = 0;
+		int leatherStripFindCount = 0;
+		int goldFindCount = 0;
+
+		/**
+		 * 
+		 * Shop Variables
+		 * 
+		 */
+		int baseShopGold = 100 + playerLevel + playerLuck + playerIntellect + playerScore;
+		int shopGold = baseShopGold;
+
+		/**
+		 * 
+		 * Brewing Variables
+		 * 
+		 */
+
+		int playerBrewingLevel = 1;
+		int playerBrewingExp = 0;
+		int playerBrewingExpLeft = 2;
+		int playerBrewingExpCap = 2;
+
+		/*
+		 * while (fighting) { if (enemyPosioned && posion > 1) { posion--;
+		 * enemyHealth-=posionDamage; } }
+		 * 
+		 */
+
+		String[] potionSlot1 = { // Type, Level,
+				"Health", "1", };
+		String[] potionSlot2 = { // Type, Level,
+				"Health", "1", };
+		String[] potionSlot3 = { // Type, Level,
+				"", "", };
+		String[] potionSlot4 = { // Type, Level,
+				"", "", };
+		String[] potionSlot5 = { // Type, Level,
+				"", "", };
+
+		boolean potionSlot1Full = true;
+		boolean potionSlot2Full = true;
+		boolean potionSlot3Full = false;
+		boolean potionSlot4Full = false;
+		boolean potionSlot5Full = false;
+
+		int potionLevel = 0;
+
+		String[] potionTypes = { "Health", "Mana", "Strength", "Attack" };
+		int potionType = 0;
+		int potionSuccessChance = 40 + playerIntellect + playerBrewingLevel + playerLuck;
+
+		/**
+		 * 
+		 * Crafting Variables
+		 * 
+		 */
+
+		String craftType = "";
+
+		// Craft Types, Leather(for armor), leather reinforced, (for armor,
+		// shields, and weapons), metal, wood, stone
+		// leather reinforced, subtract leather strips to reinforce the handle
+		// of a weapon, or a shield, or armor, leather armor is weaker
+
+		int playerCraftingLevel = 1;
+
+		int craftHelmetCost = 4;
+		int craftChestpieceCost = 6;
+		int craftLegsCost = 7;
+		int craftBootsCost = 5;
+
+		int playerHelmetDurability = playerHelmetBaseDurability + playerLuck + playerIntellect + playerCraftingLevel;
+		int playerChestpieceDurability = playerHelmetBaseDurability + playerLuck + playerIntellect
+				+ playerCraftingLevel;
+		int playerLegsDurability = playerHelmetBaseDurability + playerLuck + playerIntellect + playerCraftingLevel;
+		int playerBootsDurability = playerHelmetBaseDurability + playerLuck + playerIntellect + playerCraftingLevel;
+
+		System.out.println("What is your name traveller?");
+		String name = in.nextLine();
+
+		for (int i = 1; i <= 25; i++) {
+			System.out.println("\n");
+		}
+
+		System.out.println("What is your specialty " + name + "?");
+		// Archer: agile, but weak, misses slightly more often, can get pets
+		// faster, and stronger pets
+		// Warrior: slow, but strong, more armor, dumber, tames pets slowest,
+		// pet is average
+		// Mage: medium speed, never misses, weak, can cast healing spells,
+		// smart, pets restore mana
+		System.out.println("\t1. Archer\n\t2. Warrior\n\t3. Mage");
+		String playerClass = in.nextLine();
+
+		if ((playerClass.equals("1")) || (playerClass.equals("Archer")) || (playerClass.equals("archer"))) {
+			isArcher = true;
+			playerClass = "Archer";
+		}
+
+		if ((playerClass.equals("2")) || (playerClass.equals("Warrior")) || (playerClass.equals("warrior"))) {
+			isWarrior = true;
+			playerClass = "Warrior";
+		}
+
+		if ((playerClass.equals("3")) || (playerClass.equals("Mage")) || (playerClass.equals("mage"))) {
+			isMage = true;
+			playerClass = "Mage";
+		}
+
+		for (int i = 1; i <= 25; i++) {
+			System.out.println("\n");
+		}
+
+		System.out.println("So where are you from " + name + "?");
+		// Gonroar increases strength, and health medium
+		// Winleaf increases agility and accuracy medium
+		// IDK increases all stats by 1
+		// Inwen increases intellect medium
+		System.out.println("\t1. Gonroar\n\t2. Winleaf\n\t3. IDK\n\t4. Inwen");
+		String isFrom = in.nextLine();
+
+		if ((isFrom.equals("Gonroar")) || (isFrom.equals("1")) || (isFrom.equals("gonroar"))) {
+			isFromGonroar = true;
+			isFrom = "Gonroar";
+
+		} else if ((isFrom.equals("Winleaf")) || (isFrom.equals("2")) || (isFrom.equals("winleaf"))) {
+			isFromWinleaf = true;
+			isFrom = "Winleaf";
+		}
+		if ((isFrom.equals("IDK")) || (isFrom.equals("3")) || (isFrom.equals("idk"))) {
+			isFromIDK = true;
+			isFrom = "Unknown";
+		}
+		if ((isFrom.equals("Inwen")) || (isFrom.equals("4")) || (isFrom.equals("inwen"))) {
+			isFromInwen = true;
+			isFrom = "Inwen";
+		}
+
+		/**
+		 * Set Stats
+		 */
+
+		if (isArcher) {
+			playerMaxHealth = baseHealth + 10;
+			playerHealth = baseHealth + 10;
+			playerAgility = baseAgility + 5;
+			playerAccuracy = baseAccuracy;
+			playerIntellect = baseIntellect + 2;
+			playerGold = baseGold;
+			playerArmorValue = baseArmorValue + 1;
+			playerAttackStrength = 0;
+			playerLuck = baseLuck + 3;
+			playerAttackDamage = baseAttackDamage + 5;
+			playerCritDamage = baseCritDamage + 5;
+			playerCritChance = baseCritChance + playerLuck + playerAgility / 4;
+			playerInventorySpace = baseInventorySpace;
+			playerPotionSpace = basePotionSpace + 1;
+			playerRunChance = baseRunChance + playerLuck + playerAgility / 2;
+
+			playerExpLeft = playerExpCap - playerExp;
+
+		}
+
+		else if (isWarrior) {
+			playerMaxHealth = baseHealth + 30;
+			playerHealth = baseHealth + 30;
+			playerAgility = baseAgility;
+			playerAccuracy = baseAccuracy + 20;
+			playerIntellect = baseIntellect;
+			playerGold = baseGold;
+			playerArmorValue = baseArmorValue + 5;
+			playerAttackStrength = baseStrength;
+
+			playerLuck = baseLuck;
+			playerAttackDamage = baseAttackDamage;
+			playerCritDamage = baseCritDamage + 3;
+			playerCritChance = baseCritChance + playerLuck + playerAgility / 4;
+			playerInventorySpace = baseInventorySpace + 3;
+			playerPotionSpace = basePotionSpace;
+			playerRunChance = baseRunChance + playerLuck + playerAgility / 2;
+
+			playerExpLeft = playerExpCap - playerExp;
+		}
+
+		else if (isMage) {
+			playerMaxHealth = baseHealth + 10;
+			playerHealth = baseHealth + 10;
+			playerAgility = baseAgility + 2;
+			playerAccuracy = 100;
+			playerIntellect = baseIntellect + 5;
+			playerGold = baseGold;
+			playerArmorValue = baseArmorValue + 2;
+			playerAttackStrength = 0;
+
+			playerLuck = baseLuck + 2;
+			playerAttackDamage = baseAttackDamage + 3;
+			playerCritDamage = baseCritDamage;
+			playerCritChance = 0;
+			playerInventorySpace = baseInventorySpace;
+			playerPotionSpace = basePotionSpace;
+			playerRunChance = baseRunChance + playerLuck + playerAgility / 2;
+
+			playerMana = baseMana;
+
+			playerExpLeft = playerExpCap - playerExp;
+
+		}
+
+		if (isFromGonroar) {
+			playerAttackStrength += 5;
+			playerHealth += 14;
+			playerMaxHealth += 14;
+		}
+
+		if (isFromWinleaf) {
+			playerAccuracy += 6;
+			playerAgility += 6;
+
+		}
+
+		if (isFromIDK) {
+			playerMaxHealth += 1;
+			playerHealth += 1;
+			playerAgility += 1;
+			playerAccuracy += 1;
+			playerGold += 1;
+			playerArmorValue += 1;
+			playerAttackStrength += 1;
+			playerLuck += 1;
+			playerAttackDamage += 1;
+			playerCritDamage += 1;
+			playerCritChance += 1;
+			playerInventorySpace += 1;
+			playerPotionSpace += 1;
+			playerRunChance += 1;
+		}
+
+		if (isFromInwen) {
+			playerIntellect += 6;
+		}
+
+		for (int i = 1; i <= 25; i++) {
+			System.out.println("\n");
+		}
+		System.out.println("Name: " + name + "\tClass: " + playerClass + "\tFrom: " + isFrom);
+		System.out.println(
+				"Health: " + playerHealth + "\tAttack: " + playerAttackDamage + "\tStrength: " + playerAttackStrength);
+		System.out.println("Armor: " + playerArmorValue + "\tGold: " + playerGold);
+		System.out.println(
+				"Agility: " + playerAgility + "\tAccuracy: " + playerAccuracy + "\tIntellect: " + playerIntellect);
+		System.out.println(
+				"Luck: " + playerLuck + "\tCrit-Chance: " + playerCritChance + "\tCritDamage: " + playerCritDamage);
+		System.out.println("Exp: " + playerExp + "\tLevel: " + playerLevel + "\tExp to go: " + playerExpLeft);
+		if (isMage) {
+			System.out.println("Mana: " + playerMana);
+		}
+
+		System.out.println("\n\n\n\tAre you ready to start your adventure " + name + "?");
+		System.out.println("\n\n\t\t Press Enter to begin!");
+
+		try {
+			System.in.read();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+
+		home = true;
+
+		/**
+		 * ^Quests^
+		 * 
+		 * if (playerClass == "Warrior") { quest = "Go to the blacksmith to
+		 * recieve your first sword" }
+		 * 
+		 * if (playerClass == "Archer") { quest = "Go to the shop to receive
+		 * your first bow" }
+		 * 
+		 * if (playerClass == "Mage") { quest = "Go to the brewery to recieve
+		 * your first wand" }
+		 **/
+
+		int extraExp = 0;
+		Game: while (running) {
+			playerExpLeft = playerExpCap - playerExp;
+			while (home) {
+				playerExpLeft = playerExpCap - playerExp;
+				if (playerExp == playerExpCap) {
+					playerExp = 0;
+					playerExpCap += playerExpCap;
+					playerLevel++;
+					playerMaxHealth += 10;
+					playerHealth += 10;
+					playerAgility += 1;
+					playerAccuracy += 1;
+					playerIntellect += 1;
+					playerGold += 20;
+					playerArmorValue += 1;
+					if (playerClass == "Warrior") {
+						playerAttackStrength += 2;
+					}
+					if (playerClass == "Mage") {
+						playerMana += 2;
+					}
+					playerAttackDamage += 2;
+					playerCritDamage += 3;
+					playerCritChance += 1;
+					playerInventorySpace += 1;
+					playerPotionSpace += 1;
+					playerRunChance += 1;
+                    walkingSpeed-=50;
+				}
+
+				if (playerExp > playerExpCap) {
+					extraExp = playerExp - playerExpCap;
+					playerExp = 0 + extraExp;
+					playerExpCap *= 2;
+
+					playerLevel++;
+					playerMaxHealth += 10;
+					playerHealth += 10;
+					playerAgility += 1;
+					playerAccuracy += 1;
+					playerIntellect += 1;
+					playerGold += 20;
+					playerArmorValue += 1;
+					if (playerClass == "Warrior") {
+						playerAttackStrength += 2;
+					}
+					if (playerClass == "Mage") {
+						playerMana += 2;
+					}
+					playerAttackDamage += 2;
+					playerCritDamage += 3;
+					playerCritChance += 1;
+					playerInventorySpace += 1;
+					playerPotionSpace += 1;
+					playerRunChance += 1;
+
+					smallCreatureMaxHealth += 10;
+					largeCreatureMaxHealth += 20;
+					legendCreatureMaxHealth += 30;
+
+					smallCreatureMaxAttack += 5;
+					largeCreatureMaxAttack += 8;
+					legendCreatureMaxAttack += 13;
+
+					smallCreatureMinHealth += 10;
+					largeCreatureMinHealth += 20;
+					legendCreatureMinHealth += 30;
+
+					smallCreatureMinAttack += 5;
+					largeCreatureMinAttack += 8;
+					legendCreatureMinAttack += 13;
+
+					smallCreatureMaxAgility += 1;
+					largeCreatureMaxAgility += 1;
+
+					smallCreatureMinAgility += 2;
+					largeCreatureMinAgility += 2;
+
+					enemyCritDamage += 5;
+					walkingSpeed-=50;
+				}
+
+				for (int i = 1; i <= 25; i++) {
+					System.out.println("\n");
+				}
+				distanceFromHome = 0;
+
+				System.out.println("====[--------------------]======[--------------------]====");
+				System.out.println("----------------------------------------------------------");
+				System.out.println(" Name: " + name + "\t|Health: " + playerHealth + "\t|Mana: " + playerMana);
+				System.out.println("");
+				System.out.println("(g)g)Gold: " + playerGold);
+				System.out.println("(g(g)(g)");
+				System.out.println("---------       1. Rest | 2. Inventory | 3. Leave      ");
+				System.out.println("");
+				System.out.println("||______");
+				System.out.println("||[||||]------=----=--||");
+				System.out.println("||--=-----=------=----||");
+				System.out.println("||~~~~~~~~~~~~~~~~~~~~||");
+				System.out.println("----------------------------------------------------------");
+				System.out.println("====[--------------------]======[--------------------]====");
+
+				String action = in.nextLine();
+				if (action.equals("Leave") || action.equals("leave") || action.equals("3")) {
+					town = true;
+					home = false;
+				}
+
+				if (((playerHealth > playerHealth / 2) && (action.equals("1"))) || (action.equals("Rest"))
+						|| (action.equals("rest"))) {
+					System.out.println("You are not tired right now!");
+				} else if (((playerHealth < 70) && (action.equals("1"))) || (action.equals("Rest"))
+						|| (action.equals("rest"))) {
+					for (int i = 1; i <= 25; i++) {
+						System.out.println("\n");
+					}
+					System.out.println("You crawl in bed slowly, ready to fall asleep");
+					try {
+						Thread.sleep(10000);
+					} catch (InterruptedException ex) {
+						Thread.currentThread().interrupt();
+					}
+					playerHealth = playerMaxHealth;
+					for (int i = 1; i <= 25; i++) {
+						System.out.println("\n");
+					}
+					System.out.println("You are well rested and your health is fully restored!");
+
+				} else if ((action.equals("2")) || (action.equals("Inventory")) || (action.equals("inventory"))) {
+					inventory = true;
+				}
+
+				while (inventory) {
+
+					for (int i = 1; i <= 25; i++) {
+						System.out.println("\n");
+					}
+
+					System.out
+							.println("====[--------------------]==========================[--------------------]====");
+					System.out
+							.println("------------------------------------------------------------------------------");
+					System.out.println(
+							"Name: " + name + " | Gold: " + playerGold + " | Stat Points: " + playerStatPoints);
+					System.out.println("");
+					System.out.print("Health: " + playerHealth + "/" + playerMaxHealth);
+					if (isMage) {
+						System.out.print(" | Mana: " + playerMana);
+					}
+					System.out.println(" Exp: " + playerExp + " | Exp Left: " + playerExpLeft);
+					System.out.println("");
+					if (playerOwnsPet) {
+						System.out.println(
+								"Pet: " + playerPetName + " | Pet Level: " + playerPetLevel + " | Pet Rarity: ");
+						System.out.println("Pet HP: " + playerPetHealth + " | Pet EXP: " + playerPetExp
+								+ " | Pet EXP Left: " + playerPetExpLeft);
+						System.out.println("");
+					}
+					if (metalScraps > 1 || petScrolls > 1) {
+						System.out.println("Metal Scraps: " + metalScraps + " | Pet Scrolls: " + petScrolls);
+						System.out.println("");
+					}
+					if (leatherScraps > 1 || leatherStrips > 1) {
+						System.out.println("Leather Scraps: " + leatherScraps + " | Leather Strips: " + leatherStrips);
+						System.out.println("");
+					}
+					if (playerOwnsPotion) {
+						System.out.println("Health Potions: " + playerHealthPotCount + " | Mana Potions: "
+								+ playerManaPotCount + "\nStrength Potions: " + playerStrengthPotCount
+								+ " | Attack Potions: " + playerAttackPotCount);
+						System.out.println("");
+					}
+					if (playerHelmetEquipped) {
+						System.out.println("Helmet: " + playerHelmetDurability + "/" + playerHelmetBaseDurability);
+					}
+					if (playerChestpieceEquipped) {
+						System.out.println(
+								"Chestpiece" + playerChestpieceDurability + "/" + playerChestpieceBaseDurability);
+					}
+					if (playerLegsEquipped) {
+						System.out.println("Legs" + playerLegsDurability + "/" + playerLegsBaseDurability);
+					}
+					if (playerBootsEquipped) {
+						System.out.println("Boots" + playerBootsDurability + "/" + playerBootsBaseDurability);
+					}
+					System.out.println("");
+					System.out.println("1. Go Back   | 2. Potions  | 3. Equip Items  | 4. Pet Inventory");
+
+					System.out
+							.println("------------------------------------------------------------------------------");
+					System.out
+							.println("====[--------------------]======--------------------[--------------------]====");
+
+					String option = in.nextLine();
+
+					if (option.equals("back") || option.equals("Back") || option.equals("1") || option.equals("go back")
+							|| option.equals("Go Back") || option.equals("Go back") || option.equals("go Back")) {
+						inventory = false;
+						break;
+					}
+
+					if (action.equals("Potions") || action.equals("potions") || action.equals("2")) {
+						for (int i = 1; i <= 25; i++) {
+							System.out.println("\n");
+						}
+						System.out.println("Which potion would you like to use?");
+						System.out.println("");
+						System.out.print("1. ");
+						for (int i = 0; i < potionSlot1.length; i++) {
+							System.out.print(potionSlot1[i] + ", ");
+						}
+
+						System.out.println("\n");
+						System.out.print("2. ");
+						for (int i = 0; i < potionSlot2.length; i++) {
+							System.out.print(potionSlot2[i] + ", ");
+						}
+
+						System.out.println("\n");
+						System.out.print("3. ");
+						for (int i = 0; i < potionSlot3.length; i++) {
+							System.out.print(potionSlot3[i] + ", ");
+						}
+
+						System.out.println("\n");
+						System.out.print("4. ");
+						for (int i = 0; i < potionSlot4.length; i++) {
+							System.out.print(potionSlot4[i] + ", ");
+						}
+
+						System.out.println("\n");
+						System.out.print("5. ");
+						for (int i = 0; i < potionSlot5.length; i++) {
+							System.out.print(potionSlot5[i] + ", ");
+						}
+
+						System.out.println("\n");
+
+						String potion = in.nextLine();
+
+						if (potion.equals("1") && potionSlot1Full == true) {
+
+							if (potionSlot1[1] == "1") {
+								potionLevel = 1;
+							}
+
+							if (potionSlot1[1] == "2") {
+								potionLevel = 2;
+							}
+
+							if (potionSlot1[0] == "Health" && playerHealth <= playerMaxHealth - 25 + potionLevel * 10) {
+
+								playerHealth += 25 + potionLevel * 10;
+
+								for (int i = 0; i < potionSlot1.length; i++) {
+									potionSlot1[i] = "";
+								}
+								potionSlot1Full = false;
+
+							} else {
+								System.out.println("You can't drink a health potion right now");
+							}
+
+							if (potion.equals("2")) {
+
+								if (potionSlot2[1] == "1") {
+									potionLevel = 1;
+								}
+
+								if (potionSlot2[1] == "2") {
+									potionLevel = 2;
+								}
+
+								if (potionSlot2[0] == "Health"
+										&& playerHealth <= playerMaxHealth - 25 + potionLevel * 10) {
+
+									playerHealth += 25 + potionLevel * 10;
+
+									for (int i = 0; i < potionSlot2.length; i++) {
+										potionSlot2[i] = "";
+									}
+									potionSlot2Full = false;
+								}
+
+								potionSlot2Full = false;
+							} else {
+								System.out.println("You can't drink a health potion right now");
+							}
+							if (potion.equals("3")) {
+
+								if (potionSlot3[1] == "1") {
+									potionLevel = 1;
+								}
+
+								if (potionSlot3[1] == "2") {
+									potionLevel = 2;
+								}
+
+								if (potionSlot3[0] == "Health"
+										&& playerHealth <= playerMaxHealth - 25 + potionLevel * 10) {
+
+									playerHealth += 25 + potionLevel * 10;
+
+									for (int i = 0; i < potionSlot3.length; i++) {
+										potionSlot3[i] = "";
+									}
+									potionSlot3Full = false;
+								} else {
+									System.out.println("You can't drink a health potion right now");
+								}
+
+							}
+							if (potion.equals("4")) {
+
+								if (potionSlot4[1] == "1") {
+									potionLevel = 1;
+								}
+
+								if (potionSlot4[1] == "2") {
+									potionLevel = 2;
+								}
+
+								if (potionSlot4[0] == "Health"
+										&& playerHealth <= playerMaxHealth - 25 + potionLevel * 10) {
+
+									playerHealth += 25 + potionLevel * 10;
+
+									for (int i = 0; i < potionSlot4.length; i++) {
+										potionSlot4[i] = "";
+									}
+									potionSlot4Full = false;
+								} else {
+									System.out.println("You can't drink a health potion right now");
+								}
+
+							}
+
+							if (potion.equals("5")) {
+
+								if (potionSlot5[1] == "1") {
+									potionLevel = 1;
+								}
+
+								if (potionSlot5[1] == "2") {
+									potionLevel = 2;
+								}
+
+								if (potionSlot5[0] == "Health"
+										&& playerHealth <= playerMaxHealth - 25 + potionLevel * 10) {
+
+									playerHealth += 25 + potionLevel * 10;
+
+									for (int i = 0; i < potionSlot5.length; i++) {
+										potionSlot5[i] = "";
+									}
+									potionSlot5Full = false;
+								} else {
+									System.out.println("You can't drink a health potion right now");
+								}
+
+							}
+
+						}
+					}
+				}
+			}
+		
+			Town: while (town) {
+				playerExpLeft = playerExpCap - playerExp;
+				for (int i = 1; i <= 25; i++) {
+					System.out.println("\n");
+				}
+
+				System.out.println("====[--------------------]======[--------------------]====");
+				System.out.println("----------------------------------------------------------");
+				System.out.println("														  ");
+				System.out.println("|---------|               |---------|				  ");
+				System.out.println("|  Brewery|               | 3.Home  |				    ");
+				System.out.println("| |--|--| |               | |--|--| |				    ");
+				System.out.println("| | .|. | |_______________| | .|. | |					  ");
+				System.out.println("| |__|__| |_____   _______| |__|__| |					  ");
+				System.out.println("|---------|    |   |      |---------|					  ");
+				System.out.println("|------------| |   |      |---------|                     ");
+				System.out.println("|  Blacksmith| |   |      |   Shop  |            |-------|");
+				System.out.println("|  |--|--|   | |   |      | |--|--| |            |5.Leave|");
+				System.out.println("|  | .|. |   |_|   |______| | .|. | |____________| --|>  |");
+				System.out.println("|  |__|__|   |__   ______ | |__|__| |____________|  .| . |");
+				System.out.println("|------------| |   |      |---------|            |___|___|");
+				if (firstQuestComplete == false) {
+					System.out.println("You may not leave until you complete your first quest");
+				}
+				System.out.println("----------------------------------------------------------");
+				System.out.println("====[--------------------]======[--------------------]====");
+
+				String action = in.nextLine();
+
+				if (firstQuestComplete) {
+					if (action.equals("Leave") || action.equals("leave") || action.equals("5")) {
+						town = false;
+						distanceFromHome = 0;
+						world = true;
+					}
+				}
+				if (action.equals("Home") || action.equals("home") || action.equals("3")) {
+					town = false;
+					home = true;
+				}
+
+			}
+			World: while (world) {
+				walkingSpeed = 500;
+				
+				playerExpLeft = playerExpCap - playerExp;
+				if (distanceFromHome < grasslandsBoundary) {
+					currentBiome = "Grasslands";
+					isInGrasslands = true;
+					isInDessert = false;
+					isInMountain = false;
+					isInLegendary = false;
+					isInGodLands = false;
+				} else if (distanceFromHome > grasslandsBoundary && distanceFromHome < dessertBoundary) {
+					currentBiome = "Dessert";
+					isInGrasslands = false;
+					isInDessert = true;
+					isInMountain = false;
+					isInLegendary = false;
+					isInGodLands = false;
+				} else if (distanceFromHome > dessertBoundary && distanceFromHome < mountainBoundary) {
+					currentBiome = "Mountains";
+					isInGrasslands = false;
+					isInDessert = false;
+					isInMountain = true;
+					isInLegendary = false;
+					isInGodLands = false;
+				} else if (distanceFromHome > mountainBoundary && distanceFromHome < godBoundary) {
+			
+					currentBiome = "Legendary";
+					isInGrasslands = false;
+					isInDessert = false;
+					isInMountain = false;
+					isInLegendary = true;
+					isInGodLands = false;
+				} else if (distanceFromHome > godBoundary) {
+				currentBiome = "God lands";
+				isInGrasslands = false;
+				isInDessert = false;
+				isInMountain = false;
+				isInLegendary = false;
+				isInGodLands = true;
+				break;
+			}
+
+				// while in the world the player can choose how far they
+				// want to
+				// move in a direction
+				// they will move until they are stopped by a creature, or
+				// until
+				// they have moved that
+				// many spaces, they can move through biomes to find
+				// different
+				// animals, and if they wish
+				// to return home an animation will play while a wait time
+				// is
+				// played based on how far they walked
+				// health will regenerate and random items will be picked up
+				// along the way
+
+				for (int i = 1; i <= 25; i++) {
+					System.out.println("\n");
+				}
+
+				if (playerVictory) {
+
+					expEarned = 1 + playerLevel * playerExpMultiplier;
+					playerExp += expEarned;
+
+					System.out.println("You defeated the " + currentEnemy + "!");
+					System.out.println("");
+					System.out.println("You earned " + expEarned + " exp!");
+					/*
+					 * Add chests and loot to the begginning of fighting loop
+					 * where lore is played!! Add results here
+					 */
+
+					playerVictory = false;
+
+					try {
+						System.in.read();
+					} catch (IOException e) {
+
+						e.printStackTrace();
+					}
+
+				}
+
+				for (int i = 1; i <= 25; i++) {
+					System.out.println("\n");
+				}
+
+				System.out.println("====[--------------------]======[--------------------]====");
+				System.out.println("----------------------------------------------------------");
+
+				System.out.println(
+						"HP: " + playerHealth + "/" + playerMaxHealth + "         Level: " + playerLevel + " ");
+				if (isMage) {
+					System.out.print("Mana: " + playerMana);
+				}
+				System.out.println("");
+				if (playerOwnsPet) {
+					System.out.println("Pet Health: " + playerPetHealth);
+				}
+
+				if (isInGrasslands) {
+
+					System.out.println("Exp: " + playerExp + "         Exp Left: " + playerExpLeft);
+					System.out.println("\tBiome: " + currentBiome);
+					System.out.println("___---^^--~-^^-_____---^----~==~--___--^^~==~--|___--^^--|___");
+					System.out.println(distanceFromHome);
+				}
+
+				else if (isInDessert) {
+
+					System.out.println("Exp: " + playerExp + "         Exp Left: " + playerExpLeft);
+					System.out.println("\tBiome: " + currentBiome);
+					System.out.println("___~~~~~_____~~~~__   _--~~~~~~~~___   __~~~~~~___");
+					System.out.println("                   ~~~              ~~~  ");
+					System.out.println(distanceFromHome);
+				}
+
+				else if (isInMountain) {
+
+					System.out.println("");
+					System.out.println("Exp: " + playerExp + "         Exp Left: " + playerExpLeft);
+					System.out.println("\tBiome: " + currentBiome);
+					System.out.println("          __-^~_        /--^^\\");
+					System.out.println("         /     \\/--__==      \\");
+					System.out.println("     __-/       \\             \\");
+					System.out.println("__--/             ~-__          ~-~__");
+					System.out.println(distanceFromHome);
+				}
+
+				else if (isInLegendary) {
+
+					System.out.println("");
+					System.out.println("Exp: " + playerExp + "         Exp Left: " + playerExpLeft);
+					System.out.println("\n\tBiome: " + currentBiome);
+					System.out.println("");
+					System.out.println("_________-------_____________---------------_____");
+					System.out.println("        |       |           |               |");
+					System.out.println("        |       |           |               |");
+					System.out.println("        |_______|           |_______________|");
+					System.out.println(distanceFromHome);
+				}
+
+				System.out.println("");
+				System.out.println("          |[1. Forward | 2. Back | 3. Inventory]|");
+				System.out.println("");
+				System.out.println("----------------------------------------------------------");
+				System.out.println("====[--------------------]======[--------------------]====");
+
+				String action = in.nextLine();
+
+				if (action.equals("1") || action.equals("Forward") || action.equals("forward")) {
+					System.out.println("How far will you walk?");
+
+					int walkDistance = in.nextInt();
+
+					while (walkDistance > 0) {
+						
+						if (playerHealth < playerMaxHealth - 1) {
+							playerHealth += 1;
+						}
+						System.out.println("   |----|");
+						System.out.println("   |    |");
+						System.out.println("   |____|");
+						System.out.println("     |");
+						System.out.println("    /|\\");
+						System.out.println("   / | \\");
+						System.out.println("  |  |  \\");
+						System.out.println("    /\\");
+						System.out.println("   /  \\");
+						System.out.println("  /    \\");
+						System.out.println("<--    -->");
+						System.out.println("Travelling!");
+						try {
+							Thread.sleep(walkingSpeed);
+						} catch (InterruptedException ex) {
+							Thread.currentThread().interrupt();
+						}
+						for (int i = 1; i <= 25; i++) {
+							System.out.println("\n");
+						}
+
+						System.out.println("   |----|");
+						System.out.println("   |    |");
+						System.out.println("   |____|");
+						System.out.println("     |");
+						System.out.println("    /|-\\");
+						System.out.println("   / |  \\");
+						System.out.println("  /  |   \\");
+						System.out.println("    /-\\");
+						System.out.println("   /   \\");
+						System.out.println("  /     \\");
+						System.out.println("<--    -->");
+						System.out.println("Travelling!!");
+						try {
+							Thread.sleep(walkingSpeed);
+						} catch (InterruptedException ex) {
+							Thread.currentThread().interrupt();
+						}
+						for (int i = 1; i <= 25; i++) {
+							System.out.println("\n");
+						}
+
+						walkDistance -= 1;
+
+						distanceFromHome += 1;
+
+						int foundGold = rand.nextInt(100);
+						int foundLeatherScrap = rand.nextInt(100);
+						int foundLeatherStrip = rand.nextInt(100);
+						int foundPetScroll = rand.nextInt(100);
+						int foundScrapMetal = rand.nextInt(100);
+						int foundPotion = rand.nextInt(100);
+
+						if (foundPetScroll < petScrollChance) {
+
+							petScrolls++;
+
+							System.out.println("You found a pet scroll!");
+
+						}
+
+						if (foundGold < goldChance) {
+
+							goldFindCount = rand.nextInt(20 + 20);
+							playerGold += goldFindCount;
+
+							System.out.println("You found " + goldFindCount + " pieces of gold!");
+
+						}
+
+						if (foundLeatherScrap < leatherScrapChance) {
+
+							leatherScrapFindCount = rand.nextInt(2 + 1);
+							leatherScraps += leatherScrapFindCount;
+							System.out.println("You found " + leatherScrapFindCount + " leather scraps!");
+						}
+
+						if (foundLeatherStrip < leatherStripChance) {
+
+							leatherStripFindCount = rand.nextInt(1 + 1);
+							leatherStrips += leatherStripFindCount;
+							System.out.println("You found " + leatherStripFindCount + " leather strips!");
+						}
+
+						if (foundScrapMetal < scrapMetalChance) {
+
+							scrapMetalFindCount = rand.nextInt(2 + 1);
+							metalScraps += scrapMetalFindCount;
+
+							System.out.println("You found " + scrapMetalFindCount + " pieces of scrap metal!");
+						}
+
+						if (foundPotion < potionChance - potionChance / 2) {
+							potionLevel = rand.nextInt(1);
+							potionLevel++;
+							potionType = rand.nextInt(potionTypes.length);
+
+							if (potionSlot1Full == false) {
+								if (potionType == 0) {
+									potionSlot1[0] = "Health";
+									System.out.println("You found a Health potion!");
+								} else if (potionType == 0) {
+									potionSlot1[0] = "Mana";
+									System.out.println("You found a Mana potion!");
+								} else if (potionType == 0) {
+									potionSlot1[0] = "Strength";
+									System.out.println("You found a Strength potion!");
+								} else if (potionType == 0) {
+									potionSlot1[0] = "Attack";
+									System.out.println("You found a Attack potion!");
+								}
+								if (potionLevel == 1) {
+									potionSlot1[1] = "1";
+								} else {
+									potionSlot1[1] = "2";
+								}
+
+							}
+
+							else if (potionSlot2Full == false) {
+								if (potionType == 0) {
+									potionSlot2[0] = "Health";
+									System.out.println("You found a Health potion!");
+								} else if (potionType == 0) {
+									potionSlot2[0] = "Mana";
+									System.out.println("You found a Mana potion!");
+								} else if (potionType == 0) {
+									potionSlot2[0] = "Strength";
+									System.out.println("You found a Strength potion!");
+								} else if (potionType == 0) {
+									potionSlot2[0] = "Attack";
+									System.out.println("You found a Attack potion!");
+								}
+								if (potionLevel == 1) {
+									potionSlot2[1] = "1";
+								} else {
+									potionSlot2[1] = "2";
+								}
+
+							}
+
+							if (potionSlot3Full == false) {
+								if (potionType == 0) {
+									potionSlot3[0] = "Health";
+									System.out.println("You found a Health potion!");
+								} else if (potionType == 0) {
+									potionSlot3[0] = "Mana";
+									System.out.println("You found a Mana potion!");
+								} else if (potionType == 0) {
+									potionSlot3[0] = "Strength";
+									System.out.println("You found a Strength potion!");
+								} else if (potionType == 0) {
+									potionSlot3[0] = "Attack";
+									System.out.println("You found a Attack potion!");
+								}
+								if (potionLevel == 1) {
+									potionSlot3[1] = "1";
+								} else {
+									potionSlot3[1] = "2";
+								}
+
+							}
+
+							if (potionSlot4Full == false) {
+								if (potionType == 0) {
+									potionSlot4[0] = "Health";
+									System.out.println("You found a Health potion!");
+								} else if (potionType == 0) {
+									potionSlot4[0] = "Mana";
+									System.out.println("You found a Mana potion!");
+								} else if (potionType == 0) {
+									potionSlot4[0] = "Strength";
+									System.out.println("You found a Strength potion!");
+								} else if (potionType == 0) {
+									potionSlot4[0] = "Attack";
+									System.out.println("You found a Attack potion!");
+								}
+								if (potionLevel == 1) {
+									potionSlot4[1] = "1";
+								} else {
+									potionSlot4[1] = "2";
+								}
+
+							}
+
+							if (potionSlot5Full == false) {
+								if (potionType == 0) {
+									potionSlot5[0] = "Health";
+									System.out.println("You found a Health potion!");
+								} else if (potionType == 0) {
+									potionSlot5[0] = "Mana";
+									System.out.println("You found a Mana potion!");
+								} else if (potionType == 0) {
+									potionSlot5[0] = "Strength";
+									System.out.println("You found a Strength potion!");
+								} else if (potionType == 0) {
+									potionSlot5[0] = "Attack";
+									System.out.println("You found a Attack potion!");
+								}
+								if (potionLevel == 1) {
+									potionSlot5[1] = "1";
+								} else {
+									potionSlot5[1] = "2";
+								}
+
+							}
+
+						}
+
+						int foundCreature = rand.nextInt(100);
+						int creatureType = rand.nextInt(100);
+						/**
+						 * If grasslands creatures are only grasslands
+						 **/
+						if (foundCreature < 31) {
+
+							if (isInGrasslands) {
+
+								if (creatureType < 100 && creatureType > 49) {
+									currentEnemy = grasslandSmallCreatures[rand
+											.nextInt(grasslandSmallCreatures.length)];
+									currentEnemyRarity = "Common";
+
+									enemyHealth = rand.nextInt(smallCreatureMaxHealth);
+									enemyAgility = rand.nextInt(smallCreatureMaxAgility);
+									enemyAccuracy = rand.nextInt(smallCreatureMaxAccuracy);
+									enemyAttack = rand.nextInt(smallCreatureMaxAttack);
+
+									enemyAttack += smallCreatureMinAttack;
+
+									if (enemyAgility < smallCreatureMinAgility) {
+										enemyAgility = smallCreatureMinAgility;
+									}
+
+									if (enemyAccuracy < smallCreatureMinAccuracy) {
+										enemyAccuracy = smallCreatureMinAccuracy;
+									}
+
+									if (enemyHealth < smallCreatureMinHealth) {
+										enemyHealth = smallCreatureMinHealth;
+									}
+
+								}
+
+								else if (creatureType < 50 && creatureType > 1) {
+
+									currentEnemy = grasslandLargeCreatures[rand
+											.nextInt(grasslandLargeCreatures.length)];
+									currentEnemyRarity = "Rare";
+
+									enemyHealth = rand.nextInt(largeCreatureMaxHealth);
+									enemyAgility = rand.nextInt(largeCreatureMaxAgility);
+									enemyAccuracy = rand.nextInt(largeCreatureMaxAccuracy);
+									enemyAttack = rand.nextInt(largeCreatureMaxAttack);
+
+									enemyAttack += largeCreatureMinAttack;
+
+									if (enemyAgility < largeCreatureMinAgility) {
+										enemyAgility = largeCreatureMinAgility;
+									}
+
+									if (enemyAccuracy < largeCreatureMinAccuracy) {
+										enemyAccuracy = largeCreatureMinAccuracy;
+									}
+
+									if (enemyHealth < largeCreatureMinHealth) {
+										enemyHealth = largeCreatureMinHealth;
+									}
+
+								}
+
+								else {
+									currentEnemy = grasslandLegendCreatures[rand
+											.nextInt(grasslandLegendCreatures.length)];
+									currentEnemyRarity = "Legendary";
+
+									enemyHealth = rand.nextInt(legendCreatureMaxHealth);
+
+									if (enemyHealth < legendCreatureMinHealth) {
+										enemyHealth += legendCreatureMinHealth;
+									}
+
+								}
+
+							}
+
+							/**
+							 * If Dessert creatures are only dessert
+							 **/
+							if (isInDessert) {
+
+								if (foundCreature < 31) {
+									creatureType = rand.nextInt(100);
+								}
+
+								if (creatureType < 100 && creatureType > 49) {
+									currentEnemy = dessertSmallCreatures[rand.nextInt(dessertSmallCreatures.length)];
+									currentEnemyRarity = "Common";
+
+									enemyHealth = rand.nextInt(smallCreatureMaxHealth);
+									enemyAgility = rand.nextInt(smallCreatureMaxAgility);
+									enemyAccuracy = rand.nextInt(smallCreatureMaxAccuracy);
+									enemyAttack = rand.nextInt(smallCreatureMaxAttack);
+
+									enemyAttack += smallCreatureMinAttack;
+
+									if (enemyAgility < smallCreatureMinAgility) {
+										enemyAgility = smallCreatureMinAgility;
+									}
+
+									if (enemyAccuracy < smallCreatureMinAccuracy) {
+										enemyAccuracy = smallCreatureMinAccuracy;
+									}
+
+									if (enemyHealth < smallCreatureMinHealth) {
+										enemyHealth = smallCreatureMinHealth;
+									}
+
+								}
+
+								else if (creatureType < 50 && creatureType > 1) {
+
+									currentEnemy = dessertLargeCreatures[rand.nextInt(dessertLargeCreatures.length)];
+									currentEnemyRarity = "Rare";
+
+									enemyHealth = rand.nextInt(largeCreatureMaxHealth);
+									enemyAgility = rand.nextInt(largeCreatureMaxAgility);
+									enemyAccuracy = rand.nextInt(largeCreatureMaxAccuracy);
+									enemyAttack = rand.nextInt(largeCreatureMaxAttack);
+
+									enemyAttack += largeCreatureMinAttack;
+
+									if (enemyAgility < largeCreatureMinAgility) {
+										enemyAgility = largeCreatureMinAgility;
+									}
+
+									if (enemyAccuracy < largeCreatureMinAccuracy) {
+										enemyAccuracy = largeCreatureMinAccuracy;
+									}
+
+									if (enemyHealth < largeCreatureMinHealth) {
+										enemyHealth = largeCreatureMinHealth;
+									}
+
+								}
+
+								else {
+									currentEnemy = dessertLegendCreatures[rand.nextInt(dessertLegendCreatures.length)];
+									currentEnemyRarity = "Legendary";
+
+									enemyHealth = rand.nextInt(legendCreatureMaxHealth);
+
+									if (enemyHealth < legendCreatureMinHealth) {
+										enemyHealth += legendCreatureMinHealth;
+									}
+
+								}
+
+							}
+
+							/**
+							 * If mountain creatures are only mountain
+							 **/
+							if (isInMountain) {
+
+								if (foundCreature < 31) {
+									creatureType = rand.nextInt(100);
+								}
+								if (creatureType < 100 && creatureType > 10) {
+									currentEnemy = mountainSmallCreatures[rand.nextInt(mountainSmallCreatures.length)];
+									currentEnemyRarity = "Common";
+
+									enemyHealth = rand.nextInt(smallCreatureMaxHealth);
+									enemyAgility = rand.nextInt(smallCreatureMaxAgility);
+									enemyAccuracy = rand.nextInt(smallCreatureMaxAccuracy);
+									enemyAttack = rand.nextInt(smallCreatureMaxAttack);
+
+									enemyAttack += smallCreatureMinAttack;
+
+									if (enemyAgility > smallCreatureMinAgility) {
+										enemyAgility = smallCreatureMinAgility;
+									}
+
+									if (enemyAccuracy > smallCreatureMinAccuracy) {
+										enemyAccuracy = smallCreatureMinAccuracy;
+									}
+
+									if (enemyHealth < smallCreatureMinHealth) {
+										enemyHealth = smallCreatureMinHealth;
+									}
+									
+								}
+
+								else {
+									currentEnemy = LegendaryLegendCreatures[rand
+											.nextInt(LegendaryLegendCreatures.length)];
+									currentEnemyRarity = "Legendary";
+
+									enemyHealth = rand.nextInt(legendCreatureMaxHealth);
+
+									if (enemyHealth < legendCreatureMinHealth) {
+										enemyHealth += legendCreatureMinHealth;
+									}
+
+								}
+
+							}
+
+							if (isInLegendary) {
+
+								if (foundCreature < 10) {
+									creatureType = rand.nextInt(100);
+								}
+								foundCreature = 0;
+								if (creatureType < 100 && creatureType > 49) {
+									currentEnemy = LegendarySmallCreatures[rand
+											.nextInt(LegendarySmallCreatures.length)];
+									currentEnemyRarity = "Common";
+
+									enemyHealth = rand.nextInt(smallCreatureMaxHealth);
+									enemyAgility = rand.nextInt(smallCreatureMaxAgility);
+									enemyAccuracy = rand.nextInt(smallCreatureMaxAccuracy);
+									enemyAttack = rand.nextInt(smallCreatureMaxAttack);
+
+									enemyAttack += smallCreatureMinAttack;
+
+									if (enemyAgility > smallCreatureMinAgility) {
+										enemyAgility = smallCreatureMinAgility;
+									}
+
+									if (enemyAccuracy > smallCreatureMinAccuracy) {
+										enemyAccuracy = smallCreatureMinAccuracy;
+									}
+
+									if (enemyHealth < smallCreatureMinHealth) {
+										enemyHealth = smallCreatureMinHealth;
+									}
+
+									enemyAgility *= 3;
+									enemyAccuracy *= 3;
+									enemyAttack *= 3;
+									enemyHealth *= 3;
+
+								}
+
+								else {
+									currentEnemy = LegendaryLegendCreatures[rand
+											.nextInt(LegendaryLegendCreatures.length)];
+									currentEnemyRarity = "Legendary";
+
+								}
+
+							}
+
+							fighting = true;
+							world = false;
+						}
+
+					}
+
+				}
+
+				if (action.equals("2") || action.equals("Back") || action.equals("back")) {
+					int waitTime = distanceFromHome / 10;
+
+					for (int j = 0; j < waitTime; j++) {
+						if (playerHealth < playerMaxHealth - 5) {
+							playerHealth += 5;
+						}
+						System.out.println("   |----|");
+						System.out.println("   |    |");
+						System.out.println("   |____|");
+						System.out.println("     |");
+						System.out.println("    /|\\");
+						System.out.println("   / | \\");
+						System.out.println("  |  |  \\");
+						System.out.println("    /\\");
+						System.out.println("   /  \\");
+						System.out.println("  /    \\");
+						System.out.println("<--    -->");
+						System.out.println("Returning Home!");
+						try {
+							Thread.sleep(500);
+						} catch (InterruptedException ex) {
+							Thread.currentThread().interrupt();
+						}
+						for (int i = 1; i <= 25; i++) {
+							System.out.println("\n");
+						}
+
+						System.out.println("   |----|");
+						System.out.println("   |    |");
+						System.out.println("   |____|");
+						System.out.println("     |");
+						System.out.println("    /|-\\");
+						System.out.println("   / |  \\");
+						System.out.println("  /  |   \\");
+						System.out.println("    /-\\");
+						System.out.println("   /   \\");
+						System.out.println("  /     \\");
+						System.out.println("<--    -->");
+						System.out.println("Returning Home!");
+						try {
+							Thread.sleep(500);
+						} catch (InterruptedException ex) {
+							Thread.currentThread().interrupt();
+						}
+						for (int i = 1; i <= 25; i++) {
+							System.out.println("\n");
+						}
+
+						int foundGold = rand.nextInt(100);
+						int foundLeatherScrap = rand.nextInt(100);
+						int foundLeatherStrip = rand.nextInt(100);
+						int foundScrapMetal = rand.nextInt(100);
+						int foundPotion = rand.nextInt(100);
+
+						if (foundGold < goldChance - goldChance / 2) {
+
+							goldFindCount = rand.nextInt(20 + 20);
+							playerGold += goldFindCount;
+
+							System.out.println("You found " + goldFindCount + " pieces of gold!");
+
+						}
+
+						if (foundLeatherScrap < leatherScrapChance - leatherScrapChance / 2) {
+
+							leatherScrapFindCount = rand.nextInt(2 + 1);
+							leatherScraps += leatherScrapFindCount;
+							System.out.println("You found " + leatherScrapFindCount + " leather scraps!");
+						}
+
+						if (foundLeatherStrip < leatherStripChance - leatherStripChance / 2) {
+
+							leatherStripFindCount = rand.nextInt(1 + 1);
+							leatherStrips += leatherStripFindCount;
+							System.out.println("You found " + leatherStripFindCount + " leather strips!");
+						}
+
+						if (foundScrapMetal < scrapMetalChance - scrapMetalChance / 2) {
+
+							scrapMetalFindCount = rand.nextInt(2 + 1);
+							metalScraps += scrapMetalFindCount;
+
+							System.out.println("You found " + scrapMetalFindCount + " pieces of scrap metal!");
+						}
+
+						if (foundPotion < potionChance - potionChance / 2) {
+							potionLevel = rand.nextInt(1);
+							potionLevel++;
+							potionType = rand.nextInt(potionTypes.length);
+
+							if (potionSlot1Full == false) {
+								if (potionType == 0) {
+									potionSlot1[0] = "Health";
+									System.out.println("You found a Health potion!");
+								} else if (potionType == 0) {
+									potionSlot1[0] = "Mana";
+									System.out.println("You found a Mana potion!");
+								} else if (potionType == 0) {
+									potionSlot1[0] = "Strength";
+									System.out.println("You found a Strength potion!");
+								} else if (potionType == 0) {
+									potionSlot1[0] = "Attack";
+									System.out.println("You found a Attack potion!");
+								}
+								if (potionLevel == 1) {
+									potionSlot1[1] = "1";
+								} else {
+									potionSlot1[1] = "2";
+								}
+
+							}
+
+							else if (potionSlot2Full == false) {
+								if (potionType == 0) {
+									potionSlot2[0] = "Health";
+									System.out.println("You found a Health potion!");
+								} else if (potionType == 0) {
+									potionSlot2[0] = "Mana";
+									System.out.println("You found a Mana potion!");
+								} else if (potionType == 0) {
+									potionSlot2[0] = "Strength";
+									System.out.println("You found a Strength potion!");
+								} else if (potionType == 0) {
+									potionSlot2[0] = "Attack";
+									System.out.println("You found a Attack potion!");
+								}
+								if (potionLevel == 1) {
+									potionSlot2[1] = "1";
+								} else {
+									potionSlot2[1] = "2";
+								}
+
+							}
+
+							if (potionSlot3Full == false) {
+								if (potionType == 0) {
+									potionSlot3[0] = "Health";
+									System.out.println("You found a Health potion!");
+								} else if (potionType == 0) {
+									potionSlot3[0] = "Mana";
+									System.out.println("You found a Mana potion!");
+								} else if (potionType == 0) {
+									potionSlot3[0] = "Strength";
+									System.out.println("You found a Strength potion!");
+								} else if (potionType == 0) {
+									potionSlot3[0] = "Attack";
+									System.out.println("You found a Attack potion!");
+								}
+								if (potionLevel == 1) {
+									potionSlot3[1] = "1";
+								} else {
+									potionSlot3[1] = "2";
+								}
+
+							}
+
+							if (potionSlot4Full == false) {
+								if (potionType == 0) {
+									potionSlot4[0] = "Health";
+									System.out.println("You found a Health potion!");
+								} else if (potionType == 0) {
+									potionSlot4[0] = "Mana";
+									System.out.println("You found a Mana potion!");
+								} else if (potionType == 0) {
+									potionSlot4[0] = "Strength";
+									System.out.println("You found a Strength potion!");
+								} else if (potionType == 0) {
+									potionSlot4[0] = "Attack";
+									System.out.println("You found a Attack potion!");
+								}
+								if (potionLevel == 1) {
+									potionSlot4[1] = "1";
+								} else {
+									potionSlot4[1] = "2";
+								}
+
+							}
+
+							if (potionSlot5Full == false) {
+								if (potionType == 0) {
+									potionSlot5[0] = "Health";
+									System.out.println("You found a Health potion!");
+								} else if (potionType == 0) {
+									potionSlot5[0] = "Mana";
+									System.out.println("You found a Mana potion!");
+								} else if (potionType == 0) {
+									potionSlot5[0] = "Strength";
+									System.out.println("You found a Strength potion!");
+								} else if (potionType == 0) {
+									potionSlot5[0] = "Attack";
+									System.out.println("You found a Attack potion!");
+								}
+								if (potionLevel == 1) {
+									potionSlot5[1] = "1";
+								} else {
+									potionSlot5[1] = "2";
+								}
+
+							}
+
+						}
+
+					}
+					town = true;
+					world = false;
+				}
+
+				else if ((action.equals("3")) || (action.equals("Inventory")) || (action.equals("inventory"))) {
+					inventory = true;
+
+					while (inventory) {
+
+						for (int i = 1; i <= 25; i++) {
+							System.out.println("\n");
+						}
+
+						System.out.println(
+								"====[--------------------]==========================[--------------------]====");
+						System.out.println(
+								"------------------------------------------------------------------------------");
+						System.out.println(
+								"Name: " + name + " | Gold: " + playerGold + " | Stat Points: " + playerStatPoints);
+						System.out.println("");
+						System.out.print("Health: " + playerHealth + "/" + playerMaxHealth);
+						if (isMage) {
+							System.out.print(" | Mana: " + playerMana);
+						}
+						System.out.println(" Exp: " + playerExp + " | Exp Left: " + playerExpLeft);
+						System.out.println("");
+						if (playerOwnsPet) {
+							System.out.println(
+									"Pet: " + playerPetName + " | Pet Level: " + playerPetLevel + " | Pet Rarity: ");
+							System.out.println("Pet HP: " + playerPetHealth + " | Pet EXP: " + playerPetExp
+									+ " | Pet EXP Left: " + playerPetExpLeft);
+							System.out.println("");
+						}
+						if (metalScraps > 1 || petScrolls > 1) {
+							System.out.println("Metal Scraps: " + metalScraps + " | Pet Scrolls: " + petScrolls);
+							System.out.println("");
+						}
+						if (leatherScraps > 1 || leatherStrips > 1) {
+							System.out.println(
+									"Leather Scraps: " + leatherScraps + " | Leather Strips: " + leatherStrips);
+							System.out.println("");
+						}
+						if (playerOwnsPotion) {
+							System.out.println("Health Potions: " + playerHealthPotCount + " | Mana Potions: "
+									+ playerManaPotCount + "\nStrength Potions: " + playerStrengthPotCount
+									+ " | Attack Potions: " + playerAttackPotCount);
+							System.out.println("");
+						}
+						if (playerHelmetEquipped) {
+							System.out.println("Helmet: " + playerHelmetDurability + "/" + playerHelmetBaseDurability);
+						}
+						if (playerChestpieceEquipped) {
+							System.out.println(
+									"Chestpiece" + playerChestpieceDurability + "/" + playerChestpieceBaseDurability);
+						}
+						if (playerLegsEquipped) {
+							System.out.println("Legs" + playerLegsDurability + "/" + playerLegsBaseDurability);
+						}
+						if (playerBootsEquipped) {
+							System.out.println("Boots" + playerBootsDurability + "/" + playerBootsBaseDurability);
+						}
+						System.out.println("");
+						System.out.println("1. Go Back   | 2. Equip Items  | 3. Potions  | 4. Pet Inventory");
+
+						System.out.println(
+								"------------------------------------------------------------------------------");
+						System.out.println(
+								"====[--------------------]======--------------------[--------------------]====");
+
+						String option = in.nextLine();
+
+						if (option.equals("back") || option.equals("Back") || option.equals("1")
+								|| option.equals("go back") || option.equals("Go Back") || option.equals("Go back")
+								|| option.equals("go Back")) {
+							inventory = false;
+						}
+
+						if (action.equals("Potions") || action.equals("potions") || action.equals("2")) {
+							for (int i = 1; i <= 25; i++) {
+								System.out.println("\n");
+							}
+							System.out.println("Which potion would you like to use?");
+							System.out.println("");
+							System.out.print("1. ");
+							for (int i = 0; i < potionSlot1.length; i++) {
+								System.out.print(potionSlot1[i] + ", ");
+							}
+
+							System.out.println("\n");
+							System.out.print("2. ");
+							for (int i = 0; i < potionSlot2.length; i++) {
+								System.out.print(potionSlot2[i] + ", ");
+							}
+
+							System.out.println("\n");
+							System.out.print("3. ");
+							for (int i = 0; i < potionSlot3.length; i++) {
+								System.out.print(potionSlot3[i] + ", ");
+							}
+
+							System.out.println("\n");
+							System.out.print("4. ");
+							for (int i = 0; i < potionSlot4.length; i++) {
+								System.out.print(potionSlot4[i] + ", ");
+							}
+
+							System.out.println("\n");
+							System.out.print("5. ");
+							for (int i = 0; i < potionSlot5.length; i++) {
+								System.out.print(potionSlot5[i] + ", ");
+							}
+
+							System.out.println("\n");
+
+							String potion = in.nextLine();
+
+							if (potion.equals("1") && potionSlot1Full == true) {
+
+								if (potionSlot1[1] == "1") {
+									potionLevel = 1;
+								}
+
+								if (potionSlot1[1] == "2") {
+									potionLevel = 2;
+								}
+
+								if (potionSlot1[0] == "Health"
+										&& playerHealth <= playerMaxHealth - 25 + potionLevel * 10) {
+
+									playerHealth += 25 + potionLevel * 10;
+
+									for (int i = 0; i < potionSlot1.length; i++) {
+										potionSlot1[i] = "";
+									}
+									potionSlot1Full = false;
+								}
+
+								potionSlot1Full = false;
+
+							} else {
+								System.out.println("You can't drink a health potion right now");
+							}
+							if (potion.equals("2")) {
+
+								if (potionSlot2[1] == "1") {
+									potionLevel = 1;
+								}
+
+								if (potionSlot2[1] == "2") {
+									potionLevel = 2;
+								}
+
+								if (potionSlot2[0] == "Health"
+										&& playerHealth <= playerMaxHealth - 25 + potionLevel * 10) {
+
+									playerHealth += 25 + potionLevel * 10;
+
+									for (int i = 0; i < potionSlot2.length; i++) {
+										potionSlot2[i] = "";
+									}
+									potionSlot2Full = false;
+								}
+
+								potionSlot2Full = false;
+							} else {
+								System.out.println("You can't drink a health potion right now");
+							}
+							if (potion.equals("3")) {
+
+								if (potionSlot3[1] == "1") {
+									potionLevel = 1;
+								}
+
+								if (potionSlot3[1] == "2") {
+									potionLevel = 2;
+								}
+
+								if (potionSlot3[0] == "Health"
+										&& playerHealth <= playerMaxHealth - 25 + potionLevel * 10) {
+
+									playerHealth += 25 + potionLevel * 10;
+
+									for (int i = 0; i < potionSlot3.length; i++) {
+										potionSlot3[i] = "";
+									}
+									potionSlot3Full = false;
+								} else {
+									System.out.println("You can't drink a health potion right now");
+								}
+
+							}
+							if (potion.equals("4")) {
+
+								if (potionSlot4[1] == "1") {
+									potionLevel = 1;
+								}
+
+								if (potionSlot4[1] == "2") {
+									potionLevel = 2;
+								}
+
+								if (potionSlot4[0] == "Health"
+										&& playerHealth <= playerMaxHealth - 25 + potionLevel * 10) {
+
+									playerHealth += 25 + potionLevel * 10;
+
+									for (int i = 0; i < potionSlot4.length; i++) {
+										potionSlot4[i] = "";
+									}
+									potionSlot4Full = false;
+								} else {
+									System.out.println("You can't drink a health potion right now");
+								}
+
+							}
+
+						}
+					}
+				}
+				
+				if (action.equals("summonLeviathan")) {
+					currentEnemy="Leviathan";
+					enemyHealth = 1100;
+					enemyAttack = 50;
+					enemyAgility = 0;
+					enemyCritChance = 10;
+					enemyAccuracy = 30;
+					fighting = true;
+				}
+			}
+
+			boolean secretCodePika = false;
+			int pikaTrys = 0;
+			
+			Fighting: while (fighting) {
+				playerExpLeft = playerExpCap - playerExp;
+				for (int i = 1; i <= 25; i++) {
+					System.out.println("\n");
+				}
+
+				System.out.println("====[--------------------]==========================[--------------------]====");
+				System.out.println("------------------------------------------------------------------------------");
+				System.out.println("");
+				System.out.println("Name: " + name + "            Enemy: " + currentEnemy);
+				System.out.println(
+						"Health: " + playerHealth + "/" + playerMaxHealth + "            Health: " + enemyHealth);
+				if (playerClass == "Mage") {
+					System.out.println("Mana: " + playerMana);
+				}
+				System.out.println("");
+				System.out.println("        1. Attack    | 2. Potion    | 3. Inventory    | 4. Run");
+				System.out.println("------------------------------------------------------------------------------");
+				/*
+				 * Add randomized messages when attack, you slash out, or fire
+				 * spratically
+				 */
+				System.out.println("You attack the " + currentEnemy + " for " + damageDone + "!");
+				if (isCritHit) {
+					System.out.println("The attack landed a lucky shot, it does " + playerCritDamage + " extra damage");
+					isCritHit = false;
+				}
+				System.out.println("The " + currentEnemy + " attacks you back for " + damageTaken + "!");
+				if (enemyIsCritHit) {
+					System.out.println("The " + currentEnemy + " landed a lucky shot, it does " + enemyCritDamage
+							+ " extra damage");
+					enemyIsCritHit = false;
+				}
+				if (secretCodePika) {
+				System.out.println("\n\nA thunderbolt crashes down upon the enemy\nA mighty bolt thrown by Zeus instantly destroying the enemy!\n\n");
+				enemyHealth = 0;
+				
+				while (pikaTrys < 12) {
+					System.out.println("           ===");
+					System.out.println("          / /");
+					System.out.println("         / /");
+					System.out.println("        \\ \\");
+					System.out.println("         \\ \\");
+					System.out.println("          / /");
+					System.out.println("         / /");
+					System.out.println("        / /");
+					System.out.println("       \\ \\");
+					System.out.println("        \\ \\");
+					System.out.println("         / /");
+					System.out.println("        / /");
+					System.out.println("       / /");
+					System.out.println("      / /");
+					System.out.println("     / /");
+					System.out.println("    \\ \\");
+					System.out.println("     \\ \\");
+					System.out.println("       \\\\");
+					System.out.println("         \\");
+					
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException ex) {
+						Thread.currentThread().interrupt();
+					}
+					for (int i = 1; i <= 25; i++) {
+						System.out.println("\n");
+					}
+					
+					System.out.println("           ===");
+					System.out.println("          \\ \\");
+					System.out.println("            \\ \\");
+					System.out.println("             \\ \\");
+					System.out.println("             \\ \\");
+					System.out.println("              / /");
+					System.out.println("             / /");
+					System.out.println("            / /");
+					System.out.println("           \\ \\");
+					System.out.println("           \\ \\");
+					System.out.println("            / /");
+					System.out.println("           / /");
+					System.out.println("          / /");
+					System.out.println("         / /");
+					System.out.println("        / /");
+					System.out.println("       \\ \\");
+					System.out.println("        \\ \\");
+					System.out.println("         \\\\");
+					System.out.println("           \\");
+					
+					pikaTrys++;
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException ex) {
+						Thread.currentThread().interrupt();
+					}
+					for (int i = 1; i <= 25; i++) {
+						System.out.println("\n");
+					}
+				}
+				pikaTrys = 0;
+				secretCodePika = false;
+				}
+				System.out.println("");
+				System.out.println("------------------------------------------------------------------------------");
+				System.out.println("====[--------------------]======--------------------[--------------------]====");
+
+
+				String action = in.nextLine();
+				
+				if (action.equals("Pikachu")) {
+					secretCodePika = true;
+				}
+				
+				if (action.equals("attack") || action.equals("Attack") || action.equals("1")) {
+
+					if (rand.nextInt(100) < playerCritChance) {
+						isCritHit = true;
+					}
+
+					if (rand.nextInt(playerAccuracy) > enemyAgility) {
+						damageDone = rand.nextInt(playerAttackDamage + playerLuck);
+						damageDone += playerAttackStrength;
+						damageDone += playerMinAttackDamage;
+
+						if (isCritHit) {
+							damageDone += playerCritDamage;
+						}
+					}
+
+					if (rand.nextInt(100) < enemyCritChance) {
+						enemyIsCritHit = true;
+					}
+					
+					if (isCritHit) {
+						damageTaken+=enemyCritDamage;
+					}
+
+					if (rand.nextInt(enemyAccuracy) > playerAgility) {
+						damageTaken = rand.nextInt(enemyAttack);
+						damageTaken += 1;
+					}
+
+					enemyHealth -= damageDone;
+					playerHealth -= damageTaken;
+
+				}
+				
+				if (playerHealth < 1) {
+					playerLost = true;
+					home = true;
+					fighting = false;
+				}
+
+				if (enemyHealth < 1) {
+					if (currentEnemy == "Leviathan") {
+						hasLeviathanTooth = true;
+					}
+					playerVictory = true;
+					world = true;
+					fighting = false;
+				}
+
+				if (action.equals("Potions") || action.equals("potions") || action.equals("2")) {
+					for (int i = 1; i <= 25; i++) {
+						System.out.println("\n");
+					}
+					System.out.println("Which potion would you like to use?");
+					System.out.println("");
+					System.out.print("1. ");
+					for (int i = 0; i < potionSlot1.length; i++) {
+						System.out.print(potionSlot1[i] + ", ");
+					}
+
+					System.out.println("\n");
+					System.out.print("2. ");
+					for (int i = 0; i < potionSlot2.length; i++) {
+						System.out.print(potionSlot2[i] + ", ");
+					}
+
+					System.out.println("\n");
+					System.out.print("3. ");
+					for (int i = 0; i < potionSlot3.length; i++) {
+						System.out.print(potionSlot3[i] + ", ");
+					}
+
+					System.out.println("\n");
+					System.out.print("4. ");
+					for (int i = 0; i < potionSlot4.length; i++) {
+						System.out.print(potionSlot4[i] + ", ");
+					}
+
+					System.out.println("\n");
+					System.out.print("5. ");
+					for (int i = 0; i < potionSlot5.length; i++) {
+						System.out.print(potionSlot5[i] + ", ");
+					}
+
+					System.out.println("\n");
+
+					String potion = in.nextLine();
+
+					if (potion.equals("1") && potionSlot1Full == true) {
+
+						if (potionSlot1[1] == "1") {
+							potionLevel = 1;
+						}
+
+						if (potionSlot1[1] == "2") {
+							potionLevel = 2;
+						}
+
+						if (potionSlot1[0] == "Health" && playerHealth <= playerMaxHealth - 25 + potionLevel * 10) {
+
+							playerHealth += 25 + potionLevel * 10;
+
+							for (int i = 0; i < potionSlot1.length; i++) {
+								potionSlot1[i] = "";
+							}
+							potionSlot1Full = false;
+						}
+
+						potionSlot1Full = false;
+
+					} else {
+						System.out.println("You can't drink a health potion right now");
+					}
+					if (potion.equals("2")) {
+
+						if (potionSlot2[1] == "1") {
+							potionLevel = 1;
+						}
+
+						if (potionSlot2[1] == "2") {
+							potionLevel = 2;
+						}
+
+						if (potionSlot2[0] == "Health" && playerHealth <= playerMaxHealth - 25 + potionLevel * 10) {
+
+							playerHealth += 25 + potionLevel * 10;
+
+							for (int i = 0; i < potionSlot2.length; i++) {
+								potionSlot2[i] = "";
+							}
+							potionSlot2Full = false;
+						}
+
+						potionSlot2Full = false;
+					} else {
+						System.out.println("You can't drink a health potion right now");
+					}
+					if (potion.equals("3")) {
+
+						if (potionSlot3[1] == "1") {
+							potionLevel = 1;
+						}
+
+						if (potionSlot3[1] == "2") {
+							potionLevel = 2;
+						}
+
+						if (potionSlot3[0] == "Health" && playerHealth <= playerMaxHealth - 25 + potionLevel * 10) {
+
+							playerHealth += 25 + potionLevel * 10;
+
+							for (int i = 0; i < potionSlot3.length; i++) {
+								potionSlot3[i] = "";
+							}
+							potionSlot3Full = false;
+						} else {
+							System.out.println("You can't drink a health potion right now");
+						}
+
+					}
+					if (potion.equals("4")) {
+
+						if (potionSlot4[1] == "1") {
+							potionLevel = 1;
+						}
+
+						if (potionSlot4[1] == "2") {
+							potionLevel = 2;
+						}
+
+						if (potionSlot4[0] == "Health" && playerHealth <= playerMaxHealth - 25 + potionLevel * 10) {
+
+							playerHealth += 25 + potionLevel * 10;
+
+							for (int i = 0; i < potionSlot4.length; i++) {
+								potionSlot4[i] = "";
+							}
+							potionSlot4Full = false;
+						} else {
+							System.out.println("You can't drink a health potion right now");
+						}
+
+					}
+
+				}
+
+			}
+			
+  int question = 0;
+			GodLand: while (isInGodLands) {
+				playerExpLeft = playerExpCap - playerExp;
+				for (int i = 1; i <= 25; i++) {
+					System.out.println("\n");
+				}
+				
+				if (hasLeviathanTooth == false) {
+				
+				System.out.println("/\\   /\\   /\\   /\\   /\\");
+				System.out.println("[========================]");
+				System.out.println("|         {[()]}         |");
+				System.out.println("[------------------------]");
+				System.out.println(" |   \\    \\  /  \\  / |");
+				System.out.println(" |     \\  /\\/    | /  |");
+				System.out.println(" |  ==== \\/     ==|/=  | ");
+				System.out.println(" |                      | ");
+				System.out.println(" |    [()]      [()]    |");
+				System.out.println(" |          | |         |");
+				System.out.println(" \\         | |        /");
+				System.out.println("  |         [ ]        |");
+				System.out.println("   \\      _______    /");
+				System.out.println("     \\              /");
+				System.out.println("       -----    -----");
+				System.out.println("         \\-----/");
+				if (question==0) {
+				System.out.println("Who dares challenge me in my own REALM!!??");
+				System.out.println("\n1. I have not come to challenge you");
+				System.out.println("\n2. It is I!!");
+				}
+				
+				if (question==1) {
+					System.out.println("How do you deserve MY blessing??");
+					System.out.println("\n1. I have fought long for this privilage");
+					System.out.println("\n2. If you do not believe me than I will prove it!!");
+					}
+				
+				if (question==2) {
+					System.out.println("Bring me the tooth of a kraken and you shall recieve your blessing");
+					System.out.println("\n1. I accept your offer");
+					System.out.println("\n2. You would dare challenge me to some puny task!");
+					}
+				String action = in.nextLine();
+				
+				if (question == 0 && action.equals("1")) {
+					System.out.println("I have not come to challenge you, I have come to ask for your blessing!");
+				} else if (question == 0 && action.equals("2")) {
+					System.out.println("It is I " + name + " and I have come for your treasures!!");
+					fightAries = true;
+				}
+				
+				if(question == 1 && action.equals("1")) { 
+					System.out.println("I have sought you out, for ages for this privilage to see you.");
+				} else if (question == 1 && action.equals("2")) {
+					System.out.println("You do not believe in my worthiness? Allow me to prove it!!");
+					fightAries = true;
+				}
+				
+				if (question == 2 && action.equals("1")) {
+					System.out.println("I accept your challenge Mighty Aries God of War");
+					ariesBlessing = true;
+				} else if (question == 2 && action.equals("2")) {
+					System.out.println("How dare you challenge me to such a puny fight!");
+					fightAries = true;
+				}
+				
+				question++;
+				
+			}
+				if (hasLeviathanTooth) {
+					playerMaxHealth+=100;
+					playerAttackStrength+=40;
+					playerGold+=500;
+					playerAccuracy = 100;
+					playerAgility+=10;
+					playerIntellect+=10;
+					playerExp+=100;
+					playerLuck+=10;
+					playerArmorValue +=10;
+					
+				}
+				if (ariesBlessing) {
+					isInLegendary = true;
+					
+					world = true;
+					isInGodLands = false;
+				}
+				
+				if (fightAries) {
+					
+				}
+			}
+			
+		}
+	}
+}
